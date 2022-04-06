@@ -67,6 +67,6 @@ def run():
     if save_answer == "yes" or save_answer == "y":
         with open("./passwords.txt", "a",encoding="utf-8") as passwords_file:
             passwords_file.write(user_input + "-" + generated_password)
-
+            passwords_file.write("\n")
 if __name__ == "__main__":
     run()
