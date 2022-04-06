@@ -1,9 +1,12 @@
-import numbers
+import os
 import random
 import string
 
 lower_letters = string.ascii_lowercase
 symbols = string.punctuation
+
+def clear_console():
+    os.system("clear")
 
 def generate_letters(length: int):
     letters = ""
@@ -33,11 +36,11 @@ def generate_password(structure: str = None,max_length: int = None):
     password = ""
     if not structure: structure = input("Write an structure eg<L-N-L-N> : ") 
     try:
-        max_length = int(input("Max length:"))
+        if not max_length: max_length = int(input("Max length: "))
+        if max_length < 1: raise ValueError
     except ValueError:
-        print("Write a number")
-        generate_password(structure,max_length)
-    print(max_length)
+        print("Write a number higher than 1")
+        return generate_password(structure,max_length)
 
     for char in structure:
         if char == "N":
@@ -52,13 +55,18 @@ def generate_password(structure: str = None,max_length: int = None):
     if len(password) < 1:
         print("You need a custom structure")
         return generate_password(structure,max_length)
-
     return password
 
 def run():
+    clear_console()
     user_input = input("Write a name for your password: ")
     generated_password = generate_password()
-    print(generated_password)
+    clear_console()
+    print(user_input + ": "+ generated_password)
+    save_answer = input("Want to save it in a file?: ")
+    if save_answer == "yes" or save_answer == "y":
+        with open("./passwords.txt", "a",encoding="utf-8") as passwords_file:
+            passwords_file.write(user_input + "-" + generated_password)
 
 if __name__ == "__main__":
     run()
